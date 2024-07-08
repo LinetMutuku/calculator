@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .clear-button {
+            background-color: #dc3545;
+        }
+        .clear-button:hover {
+            background-color: #c82333;
+        }
+        .result, .error {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .result {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Calculator</h2>
+        <form action="{% url 'calculate' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="expression" placeholder="Enter expression (e.g., 3 + 2)" required>
+            <button type="submit">Calculate</button>
+            <button type="button" class="clear-button" onclick="clearResult()">Clear</button>
+        </form>
+        {% if result %}
+            <div class="result">
+                Result: {{ result }}
+            </div>
+        {% elif error %}
+            <div class="error">
+                Error: {{ error }}
+            </div>
+        {% endif %}
+    </div>
+    <script>
+        function clearResult() {
+            document.querySelector('input[name="expression"]').value = '';
+            document.querySelector('.result')?.remove();
+            document.querySelector('.error')?.remove();
+        }
+    </script>
+</body>
+</html>
